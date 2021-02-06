@@ -10,50 +10,55 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func formItem(label string, proposed bool) fyne.CanvasObject {
-	lbl := widget.NewLabel(label)
-	lbl.Alignment = fyne.TextAlignTrailing
-	objs := []fyne.CanvasObject{
-		/*layout.NewSpacer(),*/ lbl, newHBoxExpanded(widget.NewEntry()),
-	}
-	if proposed {
-		return newHBox(objs...)
-	}
-	return container.NewHBox(objs...)
-}
-
-func buildForm(proposed bool) fyne.CanvasObject {
-	objs := []fyne.CanvasObject{
-		formItem("Name:", proposed),
-		formItem("Last name:", proposed),
-		formItem("Card:", proposed),
-		layout.NewSpacer(),
-	}
-	if proposed {
-		return newVBox(objs...)
-	}
-	return container.NewVBox(objs...)
+func createIcon(res fyne.Resource) fyne.CanvasObject {
+	img := canvas.NewImageFromResource(res)
+	img.SetMinSize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
+	return img
 }
 
 func main() {
 	a := app.New()
 	w := a.NewWindow("Hello")
-	w.Resize(fyne.NewSize(500, 300))
+	w.Resize(fyne.NewSize(200, 100))
 
-	done := make(chan int)
-	go func() {
-		// for {
-		// 	fmt.Println(w.Content().Size())
-		// 	time.Sleep(2 * time.Second)
-		// 	select {
-		// 	case <-done:
-		// 		return
-		// 	default:
-		// 	}
-		// }
-	}()
+	// c := container.NewVBox(
+	// 	container.NewHBox(
+	// 		widget.NewEntry(),
+	// 		container.NewVBox(layout.NewSpacer(), createIcon(theme.ContentCopyIcon())),
+	// 		container.NewVBox(layout.NewSpacer(), createIcon(theme.ContentPasteIcon())),
+	// 		container.NewVBox(layout.NewSpacer(), createIcon(theme.ContentRemoveIcon())),
+	// 	),
+	// )
 
-	w.SetContent(buildForm(true))
+	// c := container.NewVBox(
+	// 	container.NewBorder(nil, nil, nil,
+	// 		container.NewHBox(
+	// 			container.NewVBox(layout.NewSpacer(), createIcon(theme.ContentCopyIcon())),
+	// 			container.NewVBox(layout.NewSpacer(), createIcon(theme.ContentPasteIcon())),
+	// 			container.NewVBox(layout.NewSpacer(), createIcon(theme.ContentRemoveIcon())),
+	// 		),
+	// 		widget.NewEntry(),
+	// 	),
+	// 	layout.NewSpacer(),
+	// )
+
+	c := newHBoxAligned(layout.CrossAlignmentEnd,
+		newHBoxExpanded(widget.NewEntry()),
+		createIcon(theme.ContentCopyIcon()),
+		createIcon(theme.ContentPasteIcon()),
+		createIcon(theme.ContentRemoveIcon()),
+	)
+
+	// c := newHBoxAligned(layout.CrossAlignmentEnd,
+	// 	widget.NewEntry(),
+	// 	createIcon(theme.ContentCopyIcon()),
+	// 	createIcon(theme.ContentPasteIcon()),
+	// 	createIcon(theme.ContentRemoveIcon()),
+	// )
+
+	w.SetContent(c)
+
+	// w.SetContent(buildForm(true))
 
 	// w.SetContent(container.NewVBox(
 	// 	proposed(),
@@ -62,7 +67,6 @@ func main() {
 	// ))
 
 	w.ShowAndRun()
-	close(done)
 }
 
 func current(border bool) fyne.CanvasObject {
@@ -97,34 +101,27 @@ func pRow(res fyne.Resource) fyne.CanvasObject {
 	return newHBoxAligned(layout.CrossAlignmentCenter, img, newHBoxExpanded(widget.NewEntry()))
 }
 
-// func proposed() fyne.CanvasObject {
-// 	return container.NewColumn(
-// 		fyne.AxisAlignment{},
-// 		pRow(theme.ComputerIcon()),
-// 		pRow(theme.DocumentIcon()),
-// 		pRow(theme.MailComposeIcon()),
-// 	)
+// func formItem(label string, proposed bool) fyne.CanvasObject {
+// 	lbl := widget.NewLabel(label)
+// 	lbl.Alignment = fyne.TextAlignTrailing
+// 	objs := []fyne.CanvasObject{
+// 		/*layout.NewSpacer(),*/ lbl, newHBoxExpanded(widget.NewEntry()),
+// 	}
+// 	if proposed {
+// 		return newHBox(objs...)
+// 	}
+// 	return container.NewHBox(objs...)
 // }
 
-// func pRow(res fyne.Resource) fyne.CanvasObject {
-// 	img := canvas.NewImageFromResource(res)
-// 	img.SetMinSize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
-// 	return container.NewRow(
-// 		fyne.AxisAlignment{},
-// 		img,
-// 		newHPad(),
-// 		widget.NewExpanded(widget.NewEntry()),
-// 	)
-// }
-
-// func newVPad() fyne.CanvasObject {
-// 	r := canvas.NewRectangle(color.Transparent)
-// 	r.SetMinSize(fyne.NewSize(0, theme.Padding()))
-// 	return r
-// }
-
-// func newHPad() fyne.CanvasObject {
-// 	r := canvas.NewRectangle(color.Transparent)
-// 	r.SetMinSize(fyne.NewSize(theme.Padding(), 0))
-// 	return r
+// func buildForm(proposed bool) fyne.CanvasObject {
+// 	objs := []fyne.CanvasObject{
+// 		formItem("Name:", proposed),
+// 		formItem("Last name:", proposed),
+// 		formItem("Card:", proposed),
+// 		layout.NewSpacer(),
+// 	}
+// 	if proposed {
+// 		return newVBox(objs...)
+// 	}
+// 	return container.NewVBox(objs...)
 // }

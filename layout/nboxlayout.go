@@ -1,8 +1,6 @@
 package layout
 
 import (
-	"fmt"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/theme"
 )
@@ -213,9 +211,6 @@ func (g *nboxLayout) Layout(objects []fyne.CanvasObject, size fyne.Size) {
 	// -- Resizing flexible children
 	freeSpace := maxMainSize - allocatedSize - (theme.Padding() * float32(len(objects)-spacers-1))
 	spacePerFlex := float32(0)
-	if g.horizontal && !g.expanded {
-		fmt.Printf("free space: %.0f, minSpacerPerFlex: %.0f, flexCount: %d, spacers: %d\n", freeSpace, minSpacePerFlex, flexCount, spacers)
-	}
 	// TODO should we remove spacers when min size?? If we remove spacers, then minSpacePerFlex variable
 	// should be removed too (as it only has sense for this)
 	// if freeSpace <= (minSpacePerFlex * float32(flexCount)) {
@@ -223,9 +218,6 @@ func (g *nboxLayout) Layout(objects []fyne.CanvasObject, size fyne.Size) {
 	// }
 	if (flexCount + spacers) > 0 {
 		spacePerFlex = freeSpace / float32(flexCount+spacers)
-	}
-	if g.horizontal && !g.expanded {
-		fmt.Printf("spacePerFlex: %.0f\n\n", spacePerFlex)
 	}
 	if flexCount > 0 {
 		for _, child := range objects {
