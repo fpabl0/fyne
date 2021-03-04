@@ -10,16 +10,10 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-func createIcon(res fyne.Resource) fyne.CanvasObject {
-	img := canvas.NewImageFromResource(res)
-	img.SetMinSize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
-	return img
-}
-
 func main() {
 	a := app.New()
 	w := a.NewWindow("Hello")
-	w.Resize(fyne.NewSize(200, 100))
+	w.Resize(fyne.NewSize(500, 500))
 
 	// c := container.NewVBox(
 	// 	container.NewHBox(
@@ -42,12 +36,12 @@ func main() {
 	// 	layout.NewSpacer(),
 	// )
 
-	c := newHBoxAligned(layout.CrossAlignmentEnd,
-		newHBoxExpanded(widget.NewEntry()),
-		createIcon(theme.ContentCopyIcon()),
-		createIcon(theme.ContentPasteIcon()),
-		createIcon(theme.ContentRemoveIcon()),
-	)
+	// c := newHBoxAligned(layout.CrossAlignmentEnd,
+	// 	newHBoxExpanded(widget.NewEntry()),
+	// 	createIcon(theme.ContentCopyIcon()),
+	// 	createIcon(theme.ContentPasteIcon()),
+	// 	createIcon(theme.ContentRemoveIcon()),
+	// )
 
 	// c := newHBoxAligned(layout.CrossAlignmentEnd,
 	// 	widget.NewEntry(),
@@ -56,17 +50,25 @@ func main() {
 	// 	createIcon(theme.ContentRemoveIcon()),
 	// )
 
-	w.SetContent(c)
+	// c := buildForm(true)
 
-	// w.SetContent(buildForm(true))
-
-	// w.SetContent(container.NewVBox(
+	// c := container.NewVBox(
 	// 	proposed(),
 	// 	current(true),
 	// 	current(false),
-	// ))
+	// )
+
+	c := issue2057()
+
+	w.SetContent(c)
 
 	w.ShowAndRun()
+}
+
+func createIcon(res fyne.Resource) fyne.CanvasObject {
+	img := canvas.NewImageFromResource(res)
+	img.SetMinSize(fyne.NewSize(theme.IconInlineSize(), theme.IconInlineSize()))
+	return img
 }
 
 func current(border bool) fyne.CanvasObject {
